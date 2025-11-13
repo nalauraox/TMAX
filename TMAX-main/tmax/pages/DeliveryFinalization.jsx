@@ -33,7 +33,6 @@ export default function DeliveryFinalization() {
     to="/commission"
     className="text-2xl font-bold hover:underline cursor-pointer"
   >
-    Comissão
   </Link>
 
   <img src="/logo.png" alt="Logo" className="h-20" />

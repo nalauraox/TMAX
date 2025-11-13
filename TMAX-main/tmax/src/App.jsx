@@ -13,7 +13,6 @@ import CarRegistration from "../pages/CarRegistration";
 import FinalizationCar from "../pages/FinalizationCar";
 import FinalizationMotorcycle from "../pages/FinalizationMotorcycle";
 import Profile from "../pages/Profile";
-import Commission from "../pages/Commission";
 import Finalization from "../pages/FinalizationMotorcycle";
 
 export default function App() {
@@ -23,14 +22,13 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/driver-registration" element={<DriverRegistration />} />
+        <Route path="/driver-registration-moto" element={<DriverRegistration />} />
         <Route path="/motorcycle-registration" element={<MotorcycleRegistration />} />
         <Route path="/finalization" element={<Finalization />} />
         <Route path="/routestodo" element={<RoutesToDo />} />
         <Route path="/routestart" element={<RouteStarted />} />
         <Route path="/deliveryfinalization" element={<DeliveryFinalization />} />
         <Route path="/carregistration" element={<CarRegistration />} />
-        <Route path="/commission" element={<Commission/>} />
         <Route path="/profile" element={<Profile/>} />
         
 

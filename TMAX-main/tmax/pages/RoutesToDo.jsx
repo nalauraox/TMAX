@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function RoutesToDo() {
   const navigate = useNavigate();
@@ -33,43 +33,60 @@ export default function RoutesToDo() {
     navigate("/RouteStart", { state: { delivery } });
   };
 
+  // 👉 Função do botão Home
+  const goHome = () => {
+    navigate("/RoutesToDo"); // ✅ Leva para a rota /RoutesToDo
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans">
-      {/* NAVBAR */}
-     
+      {/* ===== NAVBAR ===== */}
       <nav className="relative bg-black text-white flex items-center justify-center gap-10 w-full py-3">
-  {/* Botão Voltar usando Link */}
-  <Link
-    to="/"  // Coloque a rota para a qual quer voltar
-    className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer"
-  >
-    ← Voltar para home
-  </Link>
 
-  <Link
-    to="/commission"
-    className="text-2xl font-bold hover:underline cursor-pointer"
-  >
-    Comissão
-  </Link>
+        {/* 🔙 Voltar */}
+        <Link
+          to="/"
+          className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer"
+        >
+          ← Voltar
+        </Link>
 
-  <img src="/logo.png" alt="Logo" className="h-20" />
+        {/* 🏠 Botão Home */}
+        <button
+          onClick={goHome}
+          className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded transition duration-200"
+        >
+           Home
+        </button>
 
-  <Link
-    to="/profile"
-    className="text-2xl font-bold hover:underline cursor-pointer"
-  >
-    Seu Perfil
-  </Link>
-</nav>
+        {/* Links da navbar */}
+        <Link
+          to="/commission"
+          className="text-2xl font-bold hover:underline cursor-pointer"
+        >
+        </Link>
 
-      {/* Main */}
+        {/* Logo central */}
+        <img src="/logo.png" alt="Logo" className="h-20" />
+
+        <Link
+          to="/profile"
+          className="text-2xl font-bold hover:underline cursor-pointer"
+        >
+          Seu Perfil
+        </Link>
+      </nav>
+
+      {/* ===== MAIN ===== */}
       <main className="flex flex-1 p-6 gap-6">
         {/* Lista de entregas */}
         <div className="flex flex-col gap-4 w-1/3">
           <h2 className="text-xl font-bold mb-2">ROTAS A FAZER:</h2>
           {deliveries.map((d, idx) => (
-            <div key={idx} className="bg-gray-200 p-4 rounded-lg flex flex-col gap-2">
+            <div
+              key={idx}
+              className="bg-gray-200 p-4 rounded-lg flex flex-col gap-2"
+            >
               <p><strong>Nome:</strong> {d.name}</p>
               <p><strong>Bairro:</strong> {d.neighborhood}</p>
               <p><strong>Rua:</strong> {d.street}</p>
@@ -86,20 +103,21 @@ export default function RoutesToDo() {
         </div>
 
         {/* Mapa */}
-        <div className="flex-1">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.092041383963!2d-43.94194638466226!3d-19.87343678703702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa699f9b6b8b8b8%3A0x0000000000000000!2sTMAX!5e0!3m2!1spt-BR!2sbr!4v1698012345678!5m2!1spt-BR!2sbr"
-            width="100%"
-            height="100%"
-            className="rounded-lg"
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
+<div className="flex-1">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.324508227437!2d-45.93872632560293!3d-22.230008479742334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cb6ab651d7f6a3%3A0xd6820d1fdf3dd9e2!2sPouso%20Alegre%2C%20MG!5e0!3m2!1spt-BR!2sbr!4v1731507600000!5m2!1spt-BR!2sbr"
+    width="100%"
+    height="100%"
+    className="rounded-lg"
+    allowFullScreen=""
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+  ></iframe>
+</div>
+{/* Mapa */}
       </main>
 
-      {/* ===== Footer ===== */}
+      {/* ===== FOOTER ===== */}
       <footer className="bg-gray-50 text-center py-6 border-t mt-auto w-full">
         <div className="flex items-center justify-center gap-2 mb-2">
           <img

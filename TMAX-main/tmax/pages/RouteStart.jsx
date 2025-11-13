@@ -24,6 +24,10 @@ export default function RouteStarted() {
     navigate("/RoutesToDo");
   };
 
+  const goHome = () => {
+    navigate("/RoutesToDo"); // Botão Home
+  };
+
   const routeInfo = {
     customer: delivery?.name || "João da Silva",
     address: delivery?.address || "Rua Olinto da costa garcia, 137 - Arvore Grande",
@@ -31,39 +35,49 @@ export default function RouteStarted() {
     lng: delivery?.lng ?? -43.9419,
     order: delivery?.order || "Onigiri e Poke",
     estimatedTime: delivery?.estimatedTime ? `${delivery.estimatedTime} min` : "15 min",
-
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans">
-      {/* 🔹 NAVBAR ATUALIZADA */}
+      {/* ===== NAVBAR ===== */}
       <nav className="relative bg-black text-white flex items-center justify-center gap-10 w-full py-3">
-  {/* Botão Voltar usando Link */}
-  <Link
-    to="/"  // Coloque a rota para a qual quer voltar
-    className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer"
-  >
-    ← Voltar para home
-  </Link>
+        {/* 🔙 Voltar */}
+        <Link
+          to="/"
+          className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer"
+        >
+          ← Voltar
+        </Link>
 
-  <Link
-    to="/commission"
-    className="text-2xl font-bold hover:underline cursor-pointer"
-  >
-    Comissão
-  </Link>
+        {/* 🏠 Botão Home */}
+        <button
+          onClick={goHome}
+          className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded transition duration-200"
+        >
+          Home
+        </button>
 
-  <img src="/logo.png" alt="Logo" className="h-20" />
+        {/* Comissão */}
+        <Link
+          to="/commission"
+          className="text-2xl font-bold hover:underline cursor-pointer"
+        >
 
-  <Link
-    to="/profile"
-    className="text-2xl font-bold hover:underline cursor-pointer"
-  >
-    Seu Perfil
-  </Link>
-</nav>
+        </Link>
 
-      {/* Main */}
+        {/* Logo central */}
+        <img src="/logo.png" alt="Logo" className="h-20" />
+
+        {/* Perfil */}
+        <Link
+          to="/profile"
+          className="text-2xl font-bold hover:underline cursor-pointer"
+        >
+          Seu Perfil
+        </Link>
+      </nav>
+
+      {/* ===== MAIN ===== */}
       <main className="flex flex-col items-center justify-center flex-1 p-6 w-full">
         <h1 className="text-2xl font-bold mb-6">Rota Iniciada</h1>
 
@@ -111,7 +125,7 @@ export default function RouteStarted() {
         </div>
       </main>
 
-      {/* Footer */}
+      {/* ===== FOOTER ===== */}
       <footer className="bg-gray-50 text-center py-6 border-t mt-auto w-full">
         <p className="text-sm text-gray-500">
           © Webtagger - 2024 Todos os Direitos Reservados
