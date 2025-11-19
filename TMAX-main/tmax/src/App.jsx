@@ -14,6 +14,7 @@ import FinalizationCar from "../pages/FinalizationCar";
 import FinalizationMotorcycle from "../pages/FinalizationMotorcycle";
 import Profile from "../pages/Profile";
 import Finalization from "../pages/FinalizationMotorcycle";
+import RouteNavigation from "../pages/RouteNavigation";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/deliveryfinalization" element={<DeliveryFinalization />} />
         <Route path="/carregistration" element={<CarRegistration />} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/route-navigation" element={<RouteNavigation />} />
         
 
         {/* ✅ Novas rotas específicas */}
