@@ -179,7 +179,7 @@ export default function RouteNavigation() {
 
       {/* rodapé */}
       <footer className="text-center text-gray-500 text-sm mt-auto py-6">
-        © 2024 Webtagger — Todos os direitos reservados.
+       © Turma Senac Tec - 2025 Todos os direitos reservados.
       </footer>
     </div>
   );

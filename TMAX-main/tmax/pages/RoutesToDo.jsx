@@ -522,7 +522,7 @@ export default function RoutesToDo() {
           <span className="text-gray-800 font-medium">Siga nosso Instagram</span>
         </div>
         <p className="text-sm text-gray-500">
-          © Webtagger - 2024 Todos os Direitos Reservados
+         © Turma Senac Tec - 2025 Todos os direitos reservados.
         </p>
       </footer>
     </div>

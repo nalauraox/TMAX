@@ -72,7 +72,7 @@ export default function DeliveryFinalization() {
       {/* Footer */}
       <footer className="bg-gray-50 text-center py-6 border-t mt-auto w-full">
         <p className="text-sm text-gray-500">
-          © Webtagger - 2024 Todos os Direitos Reservados
+          © Turma Senac Tec - 2025 Todos os direitos reservados.
         </p>
       </footer>
     </div>

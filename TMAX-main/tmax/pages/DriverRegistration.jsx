@@ -321,7 +321,7 @@ export default function DriverRegistration() {
           <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" className="w-6 h-6" />
           <span className="text-gray-800 font-medium">Siga nosso Instagram</span>
         </div>
-        <p className="text-sm text-gray-500">© Webtagger - 2024 Todos os Direitos Reservados</p>
+        <p className="text-sm text-gray-500">© Turma Senac Tec - 2025 Todos os direitos reservados.</p>
       </footer>
     </div>
   );
