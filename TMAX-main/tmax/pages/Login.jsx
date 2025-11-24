@@ -6,7 +6,7 @@ export default function Login() {
   const [cpf, setCpf] = useState("");
   const [phone, setPhone] = useState("");
   const [checked, setChecked] = useState(false);
-  const [vehicle, setVehicle] = useState(""); // novo estado
+  const [vehicle, setVehicle] = useState(""); 
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -28,12 +28,8 @@ export default function Login() {
 
     alert(`Bem-vindo, ${name}!`);
 
-    // Redireciona conforme o tipo de veículo
-    if (vehicle === "carro") {
-      navigate("/carregistration");
-    } else if (vehicle === "moto") {
-      navigate("/motorcycle-registration");
-    }
+    // Agora só moto existe, então só isso permanece:
+    navigate("/motorcycle-registration");
   };
 
   return (
@@ -45,13 +41,6 @@ export default function Login() {
           className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer"
         >
           ← Voltar para home
-        </Link>
-
-        <Link
-          to="/commission"
-          className="text-2xl font-bold hover:underline cursor-pointer"
-        >
-          Comissão
         </Link>
 
         <img src="/logo.png" alt="Logo" className="h-20" />
@@ -93,20 +82,8 @@ export default function Login() {
             className="w-full mb-6 px-4 py-3 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none"
           />
 
-          {/* Seleção de veículo */}
+          {/* 🚫 Carro removido – Mantido só Moto */}
           <div className="flex justify-center gap-6 mb-6">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="vehicle"
-                value="carro"
-                checked={vehicle === "carro"}
-                onChange={(e) => setVehicle(e.target.value)}
-                className="accent-white"
-              />
-              Carro 🚗
-            </label>
-
             <label className="flex items-center gap-2">
               <input
                 type="radio"
@@ -161,7 +138,7 @@ export default function Login() {
           </a>
         </div>
         <p className="text-sm text-gray-500">
-         © Turma Senac Tec - 2025 Todos os direitos reservados.
+          © Turma Senac Tec - 2025 Todos os direitos reservados.
         </p>
       </footer>
     </div>

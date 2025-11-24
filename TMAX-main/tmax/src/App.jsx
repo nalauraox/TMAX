@@ -16,6 +16,7 @@ import Profile from "../pages/Profile";
 import Finalization from "../pages/FinalizationMotorcycle";
 import RouteNavigation from "../pages/RouteNavigation";
 
+
 export default function App() {
   return (
     <Router>
@@ -23,7 +24,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/driver-registration-moto" element={<DriverRegistration />} />
+        <Route path="/driver-registration" element={<DriverRegistration />} />
         <Route path="/motorcycle-registration" element={<MotorcycleRegistration />} />
         <Route path="/finalization" element={<Finalization />} />
         <Route path="/routestodo" element={<RoutesToDo />} />
@@ -32,7 +33,7 @@ export default function App() {
         <Route path="/carregistration" element={<CarRegistration />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/route-navigation" element={<RouteNavigation />} />
-        
+      
 
         {/* ✅ Novas rotas específicas */}
         <Route path="/finalizationcar" element={<FinalizationCar />} />

@@ -38,13 +38,12 @@ export default function RouteStart() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Dados da entrega vindos da página anterior
   const delivery = location.state?.delivery;
 
   const [currentPos, setCurrentPos] = useState(null);
   const [route, setRoute] = useState([]);
 
-  // 1️⃣ Pegando localização real do entregador
+  // Localização real do entregador
   useEffect(() => {
     const watcher = navigator.geolocation.watchPosition(
       (pos) => {
@@ -60,7 +59,7 @@ export default function RouteStart() {
     return () => navigator.geolocation.clearWatch(watcher);
   }, []);
 
-  // 2️⃣ Calcular rota via backend OSRM
+  // Calcular rota via backend
   async function calculateRoute() {
     if (!currentPos || !delivery?.coords) return;
 
@@ -81,7 +80,6 @@ export default function RouteStart() {
     }
   }
 
-  // Navegar para página de navegação contínua
   function startRide() {
     navigate("/route-navigation", {
       state: {
@@ -92,32 +90,33 @@ export default function RouteStart() {
     });
   }
 
+  // 🔥 FUNÇÃO HOME CORRIGIDA (vai para /routestodo)
+  const goHome = () => navigate("/routestodo");
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
 
-      {/* ========== NAVBAR ========== */}
+      {/* NAVBAR */}
       <nav className="relative bg-black text-white flex items-center justify-center gap-10 w-full py-3">
 
-        {/* 🔙 Voltar */}
+        {/* 🔙 Voltar — CORRIGIDO */}
         <Link
-          to="/RoutesToDo"
+          to="/routestodo"
           className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer"
         >
           ← Voltar
         </Link>
 
-        {/* 🏠 Home */}
+        {/* 🏠 Home — CORRIGIDO */}
         <button
-          onClick={() => navigate("/")}
+          onClick={goHome}
           className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded transition duration-200"
         >
-           Home
+          Home
         </button>
 
-        {/* Logo central */}
         <img src="/logo.png" alt="Logo" className="h-20" />
 
-        {/* Perfil */}
         <Link
           to="/profile"
           className="text-2xl font-bold hover:underline cursor-pointer"
@@ -126,17 +125,16 @@ export default function RouteStart() {
         </Link>
       </nav>
 
-      {/* ========== CONTEÚDO ========== */}
+      {/* CONTEÚDO */}
       <div className="flex flex-col items-center p-4">
 
         <h2 className="text-xl font-bold mb-3">
           Rota para {delivery?.name || "Destino"}
         </h2>
 
-        {/* Mapa */}
         <div className="w-full max-w-3xl h-96 rounded-lg overflow-hidden shadow-lg mb-6">
           <MapContainer
-            center={[-22.2267, -45.9389]} // Pouso Alegre
+            center={[-22.2267, -45.9389]}
             zoom={14}
             className="w-full h-full"
           >
@@ -144,7 +142,6 @@ export default function RouteStart() {
 
             {currentPos && <FlyTo position={[currentPos.lat, currentPos.lng]} />}
 
-            {/* Marcador do entregador */}
             {currentPos && (
               <Marker
                 position={[currentPos.lat, currentPos.lng]}
@@ -152,7 +149,6 @@ export default function RouteStart() {
               />
             )}
 
-            {/* Marcador do destino */}
             {delivery?.coords && (
               <Marker
                 position={[delivery.coords.lat, delivery.coords.lng]}
@@ -160,14 +156,12 @@ export default function RouteStart() {
               />
             )}
 
-            {/* Rota */}
             {route.length > 0 && (
               <Polyline positions={route} color="blue" weight={5} />
             )}
           </MapContainer>
         </div>
 
-        {/* Botões */}
         <button
           onClick={calculateRoute}
           className="bg-blue-600 text-white px-5 py-3 rounded-lg shadow-lg mb-4"
@@ -183,7 +177,7 @@ export default function RouteStart() {
         </button>
       </div>
 
-      {/* ========== FOOTER ========== */}
+      {/* FOOTER */}
       <footer className="bg-gray-50 text-center py-6 border-t mt-auto w-full">
         <div className="flex items-center justify-center gap-2 mb-2">
           <img
@@ -194,7 +188,7 @@ export default function RouteStart() {
           <span className="text-gray-800 font-medium">Siga nosso Instagram</span>
         </div>
         <p className="text-sm text-gray-500">
-         © Turma Senac Tec - 2025 Todos os direitos reservados.
+          © Turma Senac Tec - 2025 Todos os direitos reservados.
         </p>
       </footer>
     </div>

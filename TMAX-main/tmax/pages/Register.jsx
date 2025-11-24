@@ -7,13 +7,13 @@ export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [vehicle, setVehicle] = useState("");
+  const [vehicle, setVehicle] = useState("moto"); // 🔥 Já começa como moto
   const [checked, setChecked] = useState(false);
 
   const navigate = useNavigate();
 
   const handleRegister = () => {
-    if (!name || !cpf || !email || !phone || !password || !vehicle) {
+    if (!name || !cpf || !email || !phone || !password) {
       alert("Por favor, preencha todos os campos!");
       return;
     }
@@ -24,34 +24,35 @@ export default function RegisterForm() {
       email,
       phone,
       password,
-      vehicle,
+      vehicle: "moto", // 🔥 Garantido que será sempre moto
       marketing: checked,
       loggedIn: true,
     };
 
-    // 🔹 Salva como 'driver' (para Finalization ler)
     localStorage.setItem("driver", JSON.stringify(newUser));
-    // 🔹 Também salva como 'user' (compatibilidade)
     localStorage.setItem("user", JSON.stringify(newUser));
 
     alert("Conta criada com sucesso!");
-    navigate("/finalization"); // Redireciona direto para a página de Finalização
+    navigate("/finalization");
   };
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-white">
+      {/* NAVBAR */}
       <nav className="relative bg-black text-white flex items-center justify-center gap-10 w-full py-3">
-        <Link to="/" className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer">
+        <Link
+          to="/"
+          className="absolute left-6 text-lg font-semibold hover:underline cursor-pointer"
+        >
           ← Voltar para home
-        </Link>
-
-        <Link to="/commission" className="text-2xl font-bold hover:underline cursor-pointer">
-          Comissão
         </Link>
 
         <img src="/logo.png" alt="Logo" className="h-20" />
 
-        <Link to="/profile" className="text-2xl font-bold hover:underline cursor-pointer">
+        <Link
+          to="/profile"
+          className="text-2xl font-bold hover:underline cursor-pointer"
+        >
           Seu Perfil
         </Link>
       </nav>
@@ -67,6 +68,7 @@ export default function RegisterForm() {
             onChange={(e) => setName(e.target.value)}
             className="w-full mb-4 px-4 py-3 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none"
           />
+
           <input
             type="text"
             placeholder="CPF"
@@ -74,6 +76,7 @@ export default function RegisterForm() {
             onChange={(e) => setCpf(e.target.value)}
             className="w-full mb-4 px-4 py-3 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none"
           />
+
           <input
             type="email"
             placeholder="E-mail"
@@ -81,6 +84,7 @@ export default function RegisterForm() {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full mb-4 px-4 py-3 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none"
           />
+
           <input
             type="text"
             placeholder="Telefone"
@@ -88,6 +92,7 @@ export default function RegisterForm() {
             onChange={(e) => setPhone(e.target.value)}
             className="w-full mb-4 px-4 py-3 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none"
           />
+
           <input
             type="password"
             placeholder="Senha"
@@ -96,26 +101,15 @@ export default function RegisterForm() {
             className="w-full mb-6 px-4 py-3 rounded-full bg-white text-gray-800 placeholder-gray-500 focus:outline-none"
           />
 
-          <div className="flex justify-center gap-6 mb-6">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="vehicle"
-                value="carro"
-                checked={vehicle === "carro"}
-                onChange={(e) => setVehicle(e.target.value)}
-                className="accent-white"
-              />
-              Carro 🚗
-            </label>
-
+          {/* 🔥 Moto única — carro removido */}
+          <div className="flex justify-center mb-6">
             <label className="flex items-center gap-2">
               <input
                 type="radio"
                 name="vehicle"
                 value="moto"
-                checked={vehicle === "moto"}
-                onChange={(e) => setVehicle(e.target.value)}
+                checked={true}
+                readOnly
                 className="accent-white"
               />
               Moto 🏍️
@@ -168,7 +162,7 @@ export default function RegisterForm() {
           </a>
         </div>
         <p className="text-sm text-gray-500">
-        © Turma Senac Tec - 2025 Todos os direitos reservados.
+          © Turma Senac Tec - 2025 Todos os direitos reservados.
         </p>
       </footer>
     </div>

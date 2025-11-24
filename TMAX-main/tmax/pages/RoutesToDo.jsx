@@ -77,64 +77,33 @@ export default function RoutesToDo() {
 
     // Small custom CSS for markers animation & buttons
     const style = document.createElement("style");
-    style.innerHTML = `
-      .pulse-marker {
-        width: 18px;
-        height: 18px;
-        background: #fff;
-        border: 3px solid #ff3b30; /* vermelho forte */
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(255,59,48,0.7);
-      }
-      .pulse-marker::after {
-        content: "";
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        position: absolute;
-        left: -3px; top: -3px;
-        animation: pulse 1.6s infinite;
-        box-shadow: 0 0 0 rgba(255,59,48,0.6);
-      }
-      @keyframes pulse {
-        0% { transform: scale(0.9); opacity: 0.9; }
-        70% { transform: scale(2.4); opacity: 0; }
-        100% { transform: scale(2.4); opacity: 0; }
-      }
+style.innerHTML = `
+  .pulse-marker {
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border: 3px solid #ff3b30;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255,59,48,0.7);
+  }
+  .pulse-marker::after {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: absolute;
+    left: -3px; top: -3px;
+    animation: pulse 1.6s infinite;
+    box-shadow: 0 0 0 rgba(255,59,48,0.6);
+  }
+  @keyframes pulse {
+    0% { transform: scale(0.9); opacity: 0.9; }
+    70% { transform: scale(2.4); opacity: 0; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
 
-      .floating-controls {
-        position: absolute;
-        right: 18px;
-        top: 120px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .floating-btn {
-        background: #ff3b30;
-        color: white;
-        border: none;
-        border-radius: 999px;
-        padding: 10px 14px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        cursor: pointer;
-        font-weight: 600;
-      }
-      .floating-btn.secondary {
-        background: white;
-        color: #111;
-      }
-      .instruction-card {
-        background: white;
-        padding: 8px 12px;
-        border-radius: 10px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-        max-height: 220px;
-        overflow-y: auto;
-      }
-    `;
-    document.head.appendChild(style);
 
     const GeocodeClient = new openrouteservice.Geocode({ api_key: apiKey });
     const Directions = new openrouteservice.Directions({ api_key: apiKey });
@@ -490,24 +459,6 @@ export default function RoutesToDo() {
               overflow: "hidden",
             }}
           />
-
-          {/* floating controls (posicionado via CSS injetado) */}
-          <div className="floating-controls">
-            <button
-              className="floating-btn"
-              onClick={() => (isAutoplay ? stopAutoplay() : startAutoplay())}
-            >
-              {isAutoplay ? "Parar leitura" : "Ler instruções"}
-            </button>
-
-            <button className="floating-btn secondary" onClick={recalcRoute}>
-              Recalcular rota
-            </button>
-
-            <button className="floating-btn" onClick={openInGoogleMaps}>
-              Abrir no Google Maps
-            </button>
-          </div>
         </div>
       </main>
 
