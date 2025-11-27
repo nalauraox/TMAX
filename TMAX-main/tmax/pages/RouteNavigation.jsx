@@ -84,20 +84,38 @@ export default function RouteNavigation() {
   }, [currentPos]);
 
   // Falar instrução atual
-  const speakInstruction = () => {
-    if (!instructions.length) return;
-
-    const step = instructions[currentStep] || "Continue seguindo a rota.";
-
-    const utter = new SpeechSynthesisUtterance(step);
+const speakInstruction = () => {
+  if (!instructions.length) {
+    const fallback = "Nenhuma instrução disponível no momento.";
+    const utter = new SpeechSynthesisUtterance(fallback);
     utter.lang = "pt-BR";
     utter.rate = 1;
+    window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utter);
+    return;
+  }
 
-    if (currentStep < instructions.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
+  // Cancela qualquer fala anterior
+  window.speechSynthesis.cancel();
+
+  const step = instructions[currentStep] || "Continue seguindo em frente.";
+
+  const utter = new SpeechSynthesisUtterance(step);
+  utter.lang = "pt-BR";
+  utter.rate = 1;
+
+  // Evita trava no Chrome
+  setTimeout(() => {
+    window.speechSynthesis.speak(utter);
+  }, 50);
+
+  // Próximo passo
+  setCurrentStep((prev) => {
+    if (prev < instructions.length - 1) return prev + 1;
+    return prev;
+  });
+};
+
 
   // Finalizar corrida
   const finishRide = () => {

@@ -379,7 +379,7 @@ export default function RoutesToDo() {
               height: "70vh",
               borderRadius: "12px",
               overflow: "hidden",
-            }}
+            }}   
           />
         </div>
       </main>

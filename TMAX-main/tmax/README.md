@@ -1,6 +1,6 @@
 # TMAX — Aplicação front-end
 
-Uma aplicação React + Vite com foco em rotas e navegação (integração com Leaflet). Este repositório contém a aplicação cliente com páginas de cadastro, login, gerenciamento de rotas e finalização de entregas.
+Uma aplicação React + Vite com foco em rotas e navegação (integração com Leaflet). Este repositório contém a aplicação cliente com páginas de cadastro, login, gerenciamento de rotas e finalização de entregas, com IA para ajudar a ter a melhor rota.
 
 ✅ Principais tecnologias
 
@@ -91,7 +91,7 @@ tmax/
 
 ## Observações
 
-- Esta aplicação é a camada cliente — o backend (API) não está incluído neste repositório. Ajuste as variáveis de ambiente e endpoints conforme seu backend.
+- Esta aplicação é a camada cliente — o backend (API) está incluído neste repositório. Ajuste as variáveis de ambiente e endpoints conforme seu backend.
 - As dependências de mapas e rotas (OpenRouteService, @mapbox/polyline, Leaflet) requerem chaves/serviços externos em produção.
 
 ## Contribuição
