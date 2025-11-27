@@ -1,16 +1,101 @@
-# React + Vite
+# TMAX — Aplicação front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uma aplicação React + Vite com foco em rotas e navegação (integração com Leaflet). Este repositório contém a aplicação cliente com páginas de cadastro, login, gerenciamento de rotas e finalização de entregas.
 
-Currently, two official plugins are available:
+✅ Principais tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 + React Router
+- Vite (dev / build / preview)
+- TailwindCSS (estilização)
+- Leaflet e React-Leaflet (mapas)
+- Axios (requisições HTTP)
+- OpenRouteService / @mapbox/polyline (rotas / geoprocessamento)
 
-## React Compiler
+## Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Páginas para cadastro de motorista, veículo (moto) e usuário
+- Login e perfil do usuário
+- Listagem de rotas a realizar e início de rota
+- Visualização e navegação de rotas em mapa (Leaflet)
+- Finalização de entregas por veículo
 
-## Expanding the ESLint configuration
+## Pré-requisitos
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (recomendado 18+)
+- npm ou yarn
+
+## Instalação e execução
+
+1. Instale dependências
+
+```bash
+npm install
+# ou
+yarn
+```
+
+2. Rodar em desenvolvimento (hot-reload)
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+3. Build de produção
+
+```bash
+npm run build
+# ou
+yarn build
+```
+
+4. Pré-visualizar build (local)
+
+```bash
+npm run preview
+# ou
+yarn preview
+```
+
+5. Linter
+
+```bash
+npm run lint
+# ou
+yarn lint
+```
+
+## Estrutura principal (resumo)
+
+```
+tmax/
+├─ src/
+│  ├─ pages/            # telas / rotas (Home, Login, Register, Profile, Routes, etc.)
+│  ├─ components/       # componentes reutilizáveis (forms, RouteStarted...)
+│  ├─ assets/
+│  └─ App.jsx, main.jsx  # ponto de entrada e rotas
+├─ package.json         # scripts: dev, build, preview, lint
+└─ README.md            # este arquivo
+```
+
+## Rotas (visão rápida)
+
+- /routestodo → Home
+- /register   → Cadastro
+- /login      → Login
+- /profile    → Perfil
+- /routestodo → Rotas a realizar
+- /routestart → Iniciar rota
+- /route-navigation → Navegação de rota (mapa)
+
+## Observações
+
+- Esta aplicação é a camada cliente — o backend (API) não está incluído neste repositório. Ajuste as variáveis de ambiente e endpoints conforme seu backend.
+- As dependências de mapas e rotas (OpenRouteService, @mapbox/polyline, Leaflet) requerem chaves/serviços externos em produção.
+
+## Contribuição
+
+1. Fork → clone → branch de feature
+2. Abra um pull request descrevendo mudanças
+

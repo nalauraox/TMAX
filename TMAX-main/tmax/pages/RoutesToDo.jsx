@@ -4,15 +4,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import openrouteservice from "openrouteservice-js";
 
-/**
- * RoutesToDo.jsx
- * - Estilo B: profissional (marcadores animados, rota vermelha, controles)
- * - Usa OpenRouteService (ORS) para Geocoding + Directions (optimize)
- * - Navegação por voz: fala instruções passo-a-passo + autoplay
- *
- * Substitua SUA_API_KEY_AQUI pela sua chave ORS.
- */
-
 export default function RoutesToDo() {
   const navigate = useNavigate();
 
@@ -43,7 +34,7 @@ export default function RoutesToDo() {
   const mapRef = useRef(null);
   const routeLayerRef = useRef(null);
   const markersRef = useRef([]);
-  const [instructions, setInstructions] = useState([]); // array de passos (textos)
+  const [instructions, setInstructions] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const autoplayRef = useRef(null);
   const [isAutoplay, setIsAutoplay] = useState(false);
@@ -55,60 +46,54 @@ export default function RoutesToDo() {
   const goHome = () => navigate("/RoutesToDo");
 
   useEffect(() => {
-    const apiKey = "SUA_API_KEY_AQUI"; // <<< substitua aqui
+    const apiKey = "SUA_API_KEY_AQUI";
 
-    // init map
     mapRef.current = L.map("map", { zoomControl: false }).setView(
       [-22.23, -45.938726],
       13
     );
 
-    // Tiles
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(mapRef.current);
 
-    // Zoom control (posicionado direito)
     L.control
       .zoom({
         position: "topright",
       })
       .addTo(mapRef.current);
 
-    // Small custom CSS for markers animation & buttons
     const style = document.createElement("style");
-style.innerHTML = `
-  .pulse-marker {
-    width: 18px;
-    height: 18px;
-    background: #fff;
-    border: 3px solid #ff3b30;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(255,59,48,0.7);
-  }
-  .pulse-marker::after {
-    content: "";
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    position: absolute;
-    left: -3px; top: -3px;
-    animation: pulse 1.6s infinite;
-    box-shadow: 0 0 0 rgba(255,59,48,0.6);
-  }
-  @keyframes pulse {
-    0% { transform: scale(0.9); opacity: 0.9; }
-    70% { transform: scale(2.4); opacity: 0; }
-    100% { transform: scale(2.4); opacity: 0; }
-  }
-`;
-document.head.appendChild(style);
-
+    style.innerHTML = `
+      .pulse-marker {
+        width: 18px;
+        height: 18px;
+        background: #fff;
+        border: 3px solid #ff3b30;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(255,59,48,0.7);
+      }
+      .pulse-marker::after {
+        content: "";
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        position: absolute;
+        left: -3px; top: -3px;
+        animation: pulse 1.6s infinite;
+        box-shadow: 0 0 0 rgba(255,59,48,0.6);
+      }
+      @keyframes pulse {
+        0% { transform: scale(0.9); opacity: 0.9; }
+        70% { transform: scale(2.4); opacity: 0; }
+        100% { transform: scale(2.4); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
 
     const GeocodeClient = new openrouteservice.Geocode({ api_key: apiKey });
     const Directions = new openrouteservice.Directions({ api_key: apiKey });
 
-    // limpar camadas existentes (se recarregar)
     const clearMap = () => {
       if (routeLayerRef.current) {
         mapRef.current.removeLayer(routeLayerRef.current);
@@ -124,7 +109,6 @@ document.head.appendChild(style);
       setCurrentStep(0);
     };
 
-    // converte endereços em coordenadas (lon, lat) usando ORS Geocode
     const geocodeAll = async () => {
       const coords = [];
       for (const d of deliveries) {
@@ -136,15 +120,11 @@ document.head.appendChild(style);
             boundary_country: "BR",
           });
 
-          if (!res || !res.features || res.features.length === 0) {
-            console.warn("Sem resultado de geocoding para:", fullAddress);
-            continue;
-          }
+          if (!res || !res.features || res.features.length === 0) continue;
 
           const [lng, lat] = res.features[0].geometry.coordinates;
           coords.push([lng, lat]);
 
-          // marker com estilo profissional/animado (divIcon)
           const div = L.divIcon({
             className: "",
             html: `<div class="pulse-marker"></div>`,
@@ -158,22 +138,16 @@ document.head.appendChild(style);
               `<strong>${d.name}</strong><br/>${d.street}, ${d.number}<br/>${d.neighborhood}`
             );
           markersRef.current.push(marker);
-        } catch (err) {
-          console.error("Erro geocoding:", fullAddress, err);
-        }
+        } catch {}
       }
       return coords;
     };
 
-    // calcula rota otimizada e desenha no mapa
     const calculateRoute = async () => {
       clearMap();
       const coords = await geocodeAll();
 
-      if (!coords || coords.length < 2) {
-        console.warn("Precisa de pelo menos 2 pontos para rotas");
-        return;
-      }
+      if (!coords || coords.length < 2) return;
 
       try {
         const routeResponse = await Directions.calculate({
@@ -181,20 +155,16 @@ document.head.appendChild(style);
           profile: "driving-car",
           format: "geojson",
           optimize_waypoints: true,
-          // language: "pt-BR" // ORS aceita language em alguns endpoints; deixe se quiser
         });
 
-        // desenha rota
         routeLayerRef.current = L.geoJSON(routeResponse, {
           style: { color: "#ff3b30", weight: 6, opacity: 0.95 },
         }).addTo(mapRef.current);
 
-        // centra mapa
         mapRef.current.fitBounds(routeLayerRef.current.getBounds(), {
           padding: [60, 60],
         });
 
-        // extrai instruções (ORS returns features[0].properties.segments[0].steps)
         const feat = routeResponse.features && routeResponse.features[0];
         const segs =
           feat && feat.properties && feat.properties.segments
@@ -202,7 +172,6 @@ document.head.appendChild(style);
             : null;
 
         if (segs && segs.length > 0) {
-          // ORS segments[0].steps -> array of { distance, duration, type, instruction, name, way_points }
           const steps = segs[0].steps || [];
           const texts = steps.map((s, i) => ({
             text: `${i + 1}. ${s.instruction} (${Math.round(
@@ -211,70 +180,50 @@ document.head.appendChild(style);
             raw: s,
           }));
           setInstructions(texts);
-          setCurrentStep(0);
         } else {
           setInstructions([]);
         }
-      } catch (err) {
-        console.error("Erro ao calcular rota:", err);
-      }
+      } catch {}
     };
 
-    // start: calcula assim que monta
     calculateRoute();
 
-    // cleanup on unmount
     return () => {
-      if (autoplayRef.current) {
-        clearInterval(autoplayRef.current);
-      }
+      if (autoplayRef.current) clearInterval(autoplayRef.current);
       try {
         mapRef.current.remove();
       } catch {}
       document.head.removeChild(style);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
-  // VOZ: fala instrução (usa Web Speech API)
+
   const speakText = (text) => {
-    if (!("speechSynthesis" in window)) {
-      alert("Seu navegador não suporta síntese de voz.");
-      return;
-    }
-    window.speechSynthesis.cancel(); // cancela falas anteriores
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
     const utter = new SpeechSynthesisUtterance(text);
-    // voz e parâmetros profissionais
     utter.lang = "pt-BR";
-    utter.rate = 1; // velocidade
-    utter.pitch = 1; // timbre
-    // Escolhe voz mais adequada se houver
-    const voices = window.speechSynthesis.getVoices();
-    const chosen = voices.find((v) =>
-      /brazilian|portuguese|pt-BR/i.test(v.name || v.lang)
-    );
-    if (chosen) utter.voice = chosen;
+    utter.rate = 1;
+    utter.pitch = 1;
     window.speechSynthesis.speak(utter);
   };
 
-  // fala próxima instrução
   const speakNext = () => {
-    if (!instructions || instructions.length === 0) return;
+    if (!instructions.length) return;
     const nextIndex = Math.min(currentStep, instructions.length - 1);
     speakText(instructions[nextIndex].text);
     setCurrentStep((i) => Math.min(i + 1, instructions.length - 1));
   };
 
-  // fala instrução anterior
   const speakPrev = () => {
-    if (!instructions || instructions.length === 0) return;
+    if (!instructions.length) return;
     const prev = Math.max(0, currentStep - 1);
     speakText(instructions[prev].text);
     setCurrentStep(prev);
   };
 
-  // autoplay: lê todas instruções sequencialmente
   const startAutoplay = () => {
-    if (!instructions || instructions.length === 0) return;
+    if (!instructions.length) return;
     setIsAutoplay(true);
     let idx = currentStep;
     speakText(instructions[idx].text);
@@ -288,7 +237,7 @@ document.head.appendChild(style);
       speakText(instructions[idx].text);
       setCurrentStep(idx);
       idx++;
-    }, 4000); // a cada 4s (ajustável)
+    }, 4000);
   };
 
   const stopAutoplay = () => {
@@ -300,25 +249,16 @@ document.head.appendChild(style);
     window.speechSynthesis.cancel();
   };
 
-  // Recalcula rota (botão)
   const recalcRoute = () => {
-    // força re-execução do effect removendo e reconstruindo o mapa é pesado.
-    // Em vez disso, dispararemos uma simulação: recarregamos o componente do mapa criando/removendo elemento e chamando useEffect não é simples sem hooks. 
-    // Então aqui só informamos ao usuário para recarregar a rota chamando o endpoint ORS novamente via trigger simples:
-    // EASIER: Simplesmente remove camadas e chama calculateRoute - mas calculateRoute está em scope do useEffect.
-    // Solução: forçar reload do componente inteiro pela navegação (simples): navigate to same route (re-render).
-    window.location.reload(); // solução prática e direta
+    window.location.reload();
   };
 
-  // Open in Google Maps: cria URL com origin + waypoints + destination
   const openInGoogleMaps = () => {
-    // extrai coordenadas dos markers (lat,lng)
     const coords = markersRef.current.map((m) => {
       const latlng = m.getLatLng();
       return `${latlng.lat},${latlng.lng}`;
     });
-    if (coords.length === 0) return;
-    // origin: primeiro, destination: last, waypoints: middle
+    if (!coords.length) return;
     const origin = coords[0];
     const destination = coords[coords.length - 1];
     const waypoints = coords.slice(1, coords.length - 1).join("|");
@@ -334,7 +274,6 @@ document.head.appendChild(style);
 
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans">
-      {/* NAV */}
       <nav className="relative bg-black text-white flex items-center justify-center gap-10 w-full py-3">
         <Link
           to="/"
@@ -360,9 +299,7 @@ document.head.appendChild(style);
         </Link>
       </nav>
 
-      {/* MAIN */}
       <main className="flex flex-1 p-6 gap-6 relative">
-        {/* LEFT: lista */}
         <div className="flex flex-col gap-4 w-1/3">
           <h2 className="text-2xl font-bold mb-2">ROTAS A FAZER</h2>
 
@@ -384,25 +321,12 @@ document.head.appendChild(style);
                 <strong>Número:</strong> {d.number}
               </p>
 
-              <div className="flex gap-2 items-center mt-2">
-                <button
-                  onClick={() => handleStartRoute(d)}
-                  className="bg-red-600 text-white font-bold px-3 py-2 rounded hover:bg-red-700"
-                >
-                  Iniciar
-                </button>
-
-                <button
-                  onClick={() => {
-                    // center map on this marker if exists
-                    const m = markersRef.current[idx];
-                    if (m) mapRef.current.panTo(m.getLatLng());
-                  }}
-                  className="bg-white text-gray-800 font-semibold px-3 py-2 rounded shadow"
-                >
-                  Localizar no mapa
-                </button>
-              </div>
+              <button
+                onClick={() => handleStartRoute(d)}
+                className="bg-red-600 text-white font-bold px-3 py-2 rounded hover:bg-red-700"
+              >
+                Iniciar
+              </button>
 
               <p>
                 <strong>Tempo estimado:</strong> {d.estimatedTime} minutos
@@ -410,7 +334,6 @@ document.head.appendChild(style);
             </div>
           ))}
 
-          {/* instruções */}
           <div className="mt-4 instruction-card">
             <div className="flex justify-between items-center mb-2">
               <h3 className="font-bold">Instruções ({instructions.length})</h3>
@@ -448,7 +371,6 @@ document.head.appendChild(style);
           </div>
         </div>
 
-        {/* RIGHT: mapa */}
         <div className="flex-1 relative">
           <div
             id="map"
@@ -462,7 +384,6 @@ document.head.appendChild(style);
         </div>
       </main>
 
-      {/* FOOTER */}
       <footer className="bg-gray-50 text-center py-6 border-t mt-auto w-full">
         <div className="flex items-center justify-center gap-2 mb-2">
           <img
@@ -473,7 +394,7 @@ document.head.appendChild(style);
           <span className="text-gray-800 font-medium">Siga nosso Instagram</span>
         </div>
         <p className="text-sm text-gray-500">
-         © Turma Senac Tec - 2025 Todos os direitos reservados.
+          © Turma Senac Tec - 2025 Todos os direitos reservados.
         </p>
       </footer>
     </div>
