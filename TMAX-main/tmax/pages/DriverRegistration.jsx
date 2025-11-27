@@ -1,7 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+const [motorcycleImage, setMotorcycleImage] = useState(null);  
+
 
 export default function DriverRegistration() {
+  const [motorcycleImage, setMotorcycleImage] = useState(null);
+
+const handleImage = (e) => {
+  setMotorcycleImage(e.target.files[0]);
+};
+
+const handleSubmit = async () => {
+  const formData = new FormData();
+  formData.append("motorcycle_image", motorcycleImage);
+
+  await api.post("/driver/vehicle", formData, {
+    headers: { "Content-Type": "multipart/form-data" }
+  });
+};
+
   const navigate = useNavigate();
 
   // ===== ESTADOS DO FORMULÁRIO =====
