@@ -1,0 +1,9 @@
+// src/services/api.js
+
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:8000", // ajuste se o seu backend usar outra porta
+});
+
+export default api;
