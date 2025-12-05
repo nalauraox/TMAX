@@ -9,15 +9,12 @@ export default function MotorcycleRegistration() {
     ano: "",
     placa: "",
     cor: "",
-    imagem: null,
   });
 
   const navigate = useNavigate();
 
-  // Carregar dados INDIVIDUAIS do usuário
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
     if (!currentUser) return;
 
     const key = `motorcycle_${currentUser.email}`;
@@ -25,17 +22,6 @@ export default function MotorcycleRegistration() {
 
     if (saved) setMotorcycle(JSON.parse(saved));
   }, []);
-
-  const handleMotorcycleUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setMotorcycle((prev) => ({ ...prev, imagem: reader.result }));
-    };
-    reader.readAsDataURL(file);
-  };
 
   const handleChange = (field) => (e) => {
     setMotorcycle((prev) => ({ ...prev, [field]: e.target.value }));
@@ -48,7 +34,6 @@ export default function MotorcycleRegistration() {
       return;
     }
 
-    // 🔥 SALVA SEPARADO POR USUÁRIO 🔥
     const key = `motorcycle_${currentUser.email}`;
     localStorage.setItem(key, JSON.stringify(motorcycle));
 
@@ -68,23 +53,6 @@ export default function MotorcycleRegistration() {
       <main className="flex justify-center py-10 px-6 flex-1 w-full">
         <div className="w-[400px] flex flex-col items-center">
           <h1 className="text-2xl font-bold mb-6">Cadastro da Moto</h1>
-
-          <label className="border-2 border-dashed border-gray-600 rounded-lg p-4 mb-4 flex flex-col items-center cursor-pointer w-full">
-            {motorcycle.imagem ? (
-              <img src={motorcycle.imagem} alt="Moto" className="w-48 h-32 object-cover rounded-lg" />
-            ) : (
-              <div className="text-center">
-                <div className="text-4xl">🏍️</div>
-                <div>Foto da moto</div>
-              </div>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleMotorcycleUpload}
-            />
-          </label>
 
           <input
             type="text"

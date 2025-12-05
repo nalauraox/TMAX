@@ -76,46 +76,39 @@ export default function RouteNavigation() {
     setInstructions(steps);
   }
 
-  // Recalcular rota toda vez que a localização muda
   useEffect(() => {
     if (currentPos) {
       loadRoute();
     }
   }, [currentPos]);
 
-  // Falar instrução atual
-const speakInstruction = () => {
-  if (!instructions.length) {
-    const fallback = "Nenhuma instrução disponível no momento.";
-    const utter = new SpeechSynthesisUtterance(fallback);
+  // Falar instrução
+  const speakInstruction = () => {
+    if (!instructions.length) {
+      const fallback = "Nenhuma instrução disponível no momento.";
+      const utter = new SpeechSynthesisUtterance(fallback);
+      utter.lang = "pt-BR";
+      utter.rate = 1;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+      return;
+    }
+
+    const step = instructions[currentStep] || "Continue seguindo em frente.";
+    window.speechSynthesis.cancel();
+
+    const utter = new SpeechSynthesisUtterance(step);
     utter.lang = "pt-BR";
     utter.rate = 1;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utter);
-    return;
-  }
 
-  // Cancela qualquer fala anterior
-  window.speechSynthesis.cancel();
+    setTimeout(() => {
+      window.speechSynthesis.speak(utter);
+    }, 50);
 
-  const step = instructions[currentStep] || "Continue seguindo em frente.";
-
-  const utter = new SpeechSynthesisUtterance(step);
-  utter.lang = "pt-BR";
-  utter.rate = 1;
-
-  // Evita trava no Chrome
-  setTimeout(() => {
-    window.speechSynthesis.speak(utter);
-  }, 50);
-
-  // Próximo passo
-  setCurrentStep((prev) => {
-    if (prev < instructions.length - 1) return prev + 1;
-    return prev;
-  });
-};
-
+    if (currentStep < instructions.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
 
   // Finalizar corrida
   const finishRide = () => {
@@ -141,15 +134,12 @@ const speakInstruction = () => {
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-            {/* mover câmera */}
             {currentPos && <FlyTo position={[currentPos.lat, currentPos.lng]} />}
 
-            {/* marcador do entregador */}
             {currentPos && (
               <Marker position={[currentPos.lat, currentPos.lng]} icon={driverIcon} />
             )}
 
-            {/* marcador do destino */}
             {delivery?.coords && (
               <Marker
                 position={[delivery.coords.lat, delivery.coords.lng]}
@@ -157,7 +147,6 @@ const speakInstruction = () => {
               />
             )}
 
-            {/* polyline da rota */}
             {route.length > 0 && (
               <Polyline positions={route} color="blue" weight={6} />
             )}
@@ -176,18 +165,6 @@ const speakInstruction = () => {
         </button>
 
         <button
-          onClick={() =>
-            window.open(
-              `https://www.google.com/maps/dir/?api=1&destination=${delivery.coords.lat},${delivery.coords.lng}`,
-              "_blank"
-            )
-          }
-          className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-bold"
-        >
-          🧭 Abrir no Google Maps
-        </button>
-
-        <button
           onClick={finishRide}
           className="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-bold"
         >
@@ -195,7 +172,6 @@ const speakInstruction = () => {
         </button>
       </div>
 
-      {/* rodapé */}
       <footer className="text-center text-gray-500 text-sm mt-auto py-6">
        © Turma Senac Tec - 2025 Todos os direitos reservados.
       </footer>
